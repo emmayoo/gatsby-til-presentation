@@ -10,23 +10,12 @@ interface GatsbyDetailProps {
   children: React.ReactNode;
 }
 
-const GatsbyDetail = ({ data, children }: GatsbyDetailProps) => {
-  const imageSharp = data.mdx?.frontmatter?.titleImage?.childrenImageSharp;
-  let image;
-  if (imageSharp && imageSharp.length > 0) {
-    image = getImage(imageSharp[0]?.gatsbyImageData!);
-  }
-
-  return (
-    <Layout>
-      {image && (
-        <GatsbyImage image={image} alt={data.mdx?.frontmatter?.title!} />
-      )}
-      <h2>{data.mdx?.frontmatter?.title}</h2>
-      <div>{children}</div>
-    </Layout>
-  );
-};
+const GatsbyDetail = ({ data, children }: GatsbyDetailProps) => (
+  <Layout>
+    <h5>{data.mdx?.frontmatter?.title}</h5>
+    <div>{children}</div>
+  </Layout>
+);
 
 export const query = graphql`
   query PostDetail($frontmatter__slug: String) {

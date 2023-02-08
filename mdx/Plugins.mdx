@@ -1,0 +1,136 @@
+---
+title: Plugins
+description: learn how to use Gatsby Plugins
+date: "2023-02-09"
+slug: plugins
+sort: 2
+---
+
+### [gatsby-source-filesystem](https://www.gatsbyjs.com/plugins/gatsby-source-filesystem)
+
+    ```graphql
+    query MyQuery {
+    	allFile {
+    		nodes {
+    			id
+    			name
+    		}
+    	}
+    }
+    ```
+
+### [gatsby-plugin-mdx](https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx)
+
+    ```markdown
+    ---
+    title: 타이틀
+    description: 설명
+    slug:
+    ---
+
+    # contents
+    ```
+
+    ```graphql
+    # 여러 데이터 조회
+    query MyQuery {
+    	allMdx {
+    		nodes {
+    			frontmatter {
+    				description
+    				title
+    				slug
+    			}
+    			excerpt
+    		}
+    	}
+    }
+
+    # 하나의 데이터 조회
+    query MyQuery {
+    	mdx(frontmatter: {slug: {eq: "introduction"}}) {
+    		excerpt
+    		frontmatter {
+    			title
+    			date
+    			description
+    			slug
+    		}
+    	}
+    }
+    ```
+
+    ```graphql
+    // {mdx.frontmatter__slug}.tsx
+
+    const GatsbyDetail = ({ data, children }: PageProps<Queries.PostDetailQuery>) => (
+    	<div>
+    		<h1>{data.mdx?.frontmatter?.title}</h1>
+    		<div>{children}</div>
+    {children}</div>
+    );
+
+    export const query = graphql`
+    	query PostDetail(**$frontmatter__slug: String**) {
+    		mdx(frontmatter: { slug: { eq: **$frontmatter__slug** } }) {
+    			frontmatter {
+    				title
+    				date
+    				description
+    				slug
+    			}
+    		}
+    	}
+    `;
+    ```
+
+    - slug : 일반적으로 이미 얻은 데이터를 사용하여 유효한 URL을 생성하는 방법
+    - `{mdx.frontmatter__slug}.tsx` 파일에 props.pageContext**.**frontmatter__slug 데이터 확인
+    - pageQuery 에서 pageContext 값 사용 가능 **`$frontmatter__slug`**
+    - props 에 children 로 자동으로 MDX 내용을 받음
+
+### [gatsby-plugin-image](https://www.gatsbyjs.com/plugins/gatsby-plugin-image)
+
+    - 빌드 시점에 이미지를 가져다 webp 형식으로 변환 (& 사이즈도 변환)
+
+    ```jsx
+    import { StaticImage } from "gatsby-plugin-image";
+    ...
+    <StaticImage
+    	height={300}
+    	src="https://images.unsplash.com/photo-1535271968495-080edd1ba35c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Z2F0c2J5fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
+    	alt="gatsby flow"
+    />
+    ...
+    ```
+
+### [gatsby-plugin-sharp](https://www.gatsbyjs.com/plugins/gatsby-plugin-sharp)
+
+    ```jsx
+    import { GatsbyImage, getImage } from "gatsby-plugin-image";
+
+    ...
+    const image = getImage(data.mdx?.frontmatter?.titleImage?.childrenImageSharp![0]?.gatsbyImageData!);
+    ...
+    <GatsbyImage image={image} alt={data.mdx?.frontmatter?.title!} />
+    ...
+    ```
+
+    ```jsx
+    query MyQuery {
+    	mdx(frontmatter: {slug: {eq: "introduction"}}) {
+    		frontmatter {
+    			title
+    			titleImage {
+    				childrenImageSharp {
+    					gatsbyImageData(height: 300, placeholder: BLURRED)
+    				}
+    			}
+    		}
+    	}
+    }
+    ```
+
+    - **backgroundColor,** images **fallback, responsive size** 등 제공
+
+### [gatsby-source-contentful](https://www.gatsbyjs.com/plugins/gatsby-source-contentful/?=content)

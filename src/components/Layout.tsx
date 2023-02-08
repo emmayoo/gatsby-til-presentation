@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, graphql, useStaticQuery } from "gatsby";
+import { StaticImage } from "gatsby-plugin-image";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,15 +9,15 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const data = useStaticQuery<Queries.PageListQuery>(graphql`
     query PageList {
-      allMdx {
+      allMdx(sort: { frontmatter: { sort: ASC } }) {
         nodes {
           frontmatter {
             description
             title
             slug
           }
-          excerpt
           id
+          excerpt
         }
       }
     }
@@ -27,8 +28,17 @@ const Layout = ({ children }: LayoutProps) => {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">
+              <StaticImage
+                height={22}
+                src="../images/icon.png"
+                alt="gatsby icon"
+                style={{ verticalAlign: "middle" }}
+              />
+            </Link>
           </li>
+        </ul>
+        <ul>
           {data.allMdx.nodes.map((file) => (
             <li key={file.id}>
               <Link to={`/gatsby/${file.frontmatter?.slug}`}>

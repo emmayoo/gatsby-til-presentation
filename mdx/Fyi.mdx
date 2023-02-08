@@ -1,10 +1,94 @@
 ---
-title: For Your Information
-description: other term related with Gatsby
+title: FYI
+description: (for your information) other terms related with Gatsby
 date: "2023-02-06"
 slug: fyi
+sort: 3
 ---
 
-## For Your Information
+# SSG (Static Site Generator)
 
-Gatsby 소개글 입니다.
+- 정적 페이지 기반 웹사이트를 만들어 줌
+- [Gatsby](https://www.gatsbyjs.com/), [Hugo](https://gohugo.io/), [Jekyll](https://jekyllrb.com/) 등
+- SSG로 생성되는 웹사이트는 모든 웹 페이지를 미리 만들어놓고 요청이 들어오면 준비된 파일을 응답 해주기 때문에, 속도가 엄청 빠름
+  - 서버로부터 완성된 HTML을 받아오지만, SSR 과 차이점은 **HTML 파일의 생성 시점이 '빌드 타임'**
+- 컨텐츠의 변경이 자주 일어나지 않는 비교적 소규모 웹사이트를 제작할 때 매우 유용 (개인 블로그, 제품 카탈로그 등)
+  - 빌드 시점에 웹사이트 전체를 매번 다시 만들어 내다 보니 컨텐츠가 자주 업데이트되는 웹사이트에서는 부적합함
+  - 어플리케이션이 커지면 빌드 시간도 늘어남
+- 검색 엔진 최적화(SEO)가 중요한 마켓팅 웹사이트를 제작할 때는 SSG가 매우 보편적으로 사용
+- CDN(Content Delivery Network) 활용 가능 (캐싱)
+- Headless CMS(Content Management System) 활용 가능 - CMS에 저장해놓은 모든 컨텐츠를 빌드(build) 시점에 API를 통해 몽땅 읽어와서 웹페이지로 만듦
+
+# 웹 페이지 렌더링 방식
+
+- SSR (Server Side Rendering)
+  - 특징
+    - 클라이언트 페이지 이동 요청 시, 서버에서 HTML 을 받아옴 (주소창 url 입력, 링크 클릭 등)
+    - 클라이언트는 HTML을 받고, 필요한 css와 js를 로드하며 브라우저를 렌더링
+  - 장점
+    - 초기 로딩 속도가 빠름 (사용자가 화면을 빨리 볼 수 있음)
+    - SEO (검색 엔진 최적화) 가능
+  - 단점
+    - 매번 페이지를 요청할 때마다 새로고침 발생 (깜빡임, 사용자 UX가 다소 떨어짐)
+    - 서버 부하가 커짐
+- CSR (Client Side Rendering)
+  - 특징
+    - 브라우저가 서버에게 최초 요청 시에 리소스 (HTML, CSS , JS) 를 로드후 렌더링
+    - 사용자의 상호작용에 따라서 javascript를 통해 동적으로 필요에 따라 데이터를 서버에 요청해서 받아와 렌더링
+  - 장점
+    - 좋은 사용자 경험 (UX) 제공
+    - 비교적으로 서버에 요청을 적게 해서 부담 줄여줌
+  - 단점
+    - HTML과 static 파일이 로드 될 때까지 기다려야 함 (초기 로딩 시간이 긺, 빈 화면)
+    - SEO(Search Engine Optimization)가 최적화되지 않음
+      (구글 검색엔진은 javascript까지 크롤링을 하지만 그렇지 않은 검색 엔진 많음)
+
+# JAM Stack
+
+- [https://jamstack.org/](https://jamstack.org/)
+- 웹 서비스를 만드는 한 설계 방식
+- Jamstack is an architecture designed to make the web faster, more secure, and easier to scale
+  - **기존 방식보다 더 빠르게 웹 사이트를 제공**
+    JAM Stack 은 렌더링할 화면들을 모두 Pre-Render 하여 제공해서 그만큼 사용자에게 화면을 보여주기 위해 준비하는 시간을 단축
+  - **안전한 웹 사이트를 제공**
+    마이크로 서비스로서, 사이트 생성을 위한 프로세스가 추상화되어 있어 공격 노출 범위가 감소
+  - **스케일링하기 쉬운 웹 사이트를 제공**
+    미리 빌드 된 파일 제공을 담당하는 CDN 서버를 구축하여 비용을 줄일 수 있음 > 정적 웹 사이트에서의 스케일링은 더 많은 지역에서 홈페이지를 제공할 수 있게 하는 의미
+- Javascript 와 API 그리고 Markup 으로 구성된 최신 웹 사이트를 구성하는 **방법 (Architecture)**
+  - **JavaScript :** Client 의 모든 처리는 Javascript 에게 맡깁니다.
+  - **API :** 모든 기능 및 비즈니스 로직은 재사용 가능한 API 로 추상화합니다.
+  - **Markup :** SSG (Static Site Generator) 나 Template Engine (Webpack 등) 을 이용하여 Markup 을 미리 생성합니다.
+    <figure>
+      <img src="/jamstack.webp" alt="jamstack flow" />
+      <figcaption>
+        [https://www.storyblok.com/mp/jamstack-for-marketers](https://www.storyblok.com/mp/jamstack-for-marketers)
+      </figcaption>
+    </figure>
+
+# CMS
+
+    - 직관적으로 관리할 수 있는 대시보드가 마련되어 코딩에 대한 지식이 전혀 없는 사람이라도 웹 상에서 콘텐츠를 생성, 수정, 삭제할 수 있음 (Wordpress, Contentful 등)
+    - 사용자 친화적인 툴
+
+# GraphQL
+
+- **한 번의 요청으로 정확히 필요한 정보만 요청할 수 있게 해줌**
+- 페이스북이 만든 어플리케이션 레이어 쿼리 언어 (API를 위한 쿼리 언어)
+  - graphQL specification (spec) 문서가 무료로 제공됨
+  - 그저 아이디어 (개념)일 뿐
+- 특정 언어에 종속되지 않음 (다양한 언어로 graphQL spec을 따르면 구현 가능)
+- REST API 문제를 해결하기 위함 (문제 상황 예시 : [admin 대시보드](https://admin.dable.io/dongascience.com/ad/home))
+  - over fetching : 필요한 데이터보다 더 많은 데이터를 받아옴
+  - under fetching : 데이터를 가져오는데 N개의 요청을 각각 보내야함 (로딩 타임 증가)
+
+# WebP
+
+- Google이 만든 이미지 포맷
+- 인터넷에서 이미지가 로딩되는 시간을 단축 가능하고, 같은 품질의 파일과 비교하여 크기가 더 작음
+- _나무 위키 [“제작 배경”](https://namu.wiki/w/WebP) - 만든 이유는 “돈” 때문이다. ㅋㅋ_
+
+# MDX
+
+    - [https://mdxjs.com/](https://mdxjs.com/)
+    - Markdown의 가독성과 JSX의 표현력을 결합
+    - [https://fe-developers.kakaoent.com/2022/221222-custom-md/](https://fe-developers.kakaoent.com/2022/221222-custom-md/) ← author!!!

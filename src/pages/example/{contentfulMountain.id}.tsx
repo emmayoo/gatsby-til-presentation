@@ -8,7 +8,7 @@ const MountainDetail = ({ data }: PageProps<Queries.MountainDetailQuery>) => {
   const detail = data.contentfulMountain;
   return (
     <Layout>
-      <section key={detail!.id}>
+      <section key={detail!.id} style={{ padding: "20px" }}>
         <GatsbyImage
           image={getImage(detail!.photo?.gatsbyImageData!)!}
           alt={detail!.name!}

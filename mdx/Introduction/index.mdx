@@ -4,8 +4,125 @@ description: introduction for Gatsby
 date: "2023-02-04"
 slug: introduction
 titleImage: gatsby.png
+sort: 1
 ---
 
-## What is Gatsby?
+# Gatsby
 
-Gatsby 소개글 입니다.
+- 리액트 기반으로 작성하여, 빌드 시 정적 파일을 만들어주는 **프레임워크**
+  - 사용자가 HTML을 보는 동안, JS를 다운 및 실행하며 웹 사이트를 interactive 하게 바꿈
+  - 즉, 필요한 리소스가 전부 로드되면 리액트JS로 개발된 웹 사이트와 같아짐
+- 공식 홈페이지 : [https://www.gatsbyjs.com/](https://www.gatsbyjs.com/)
+  - **Gatsby Framework :** Build a **fast, secure, and powerful website** using our React-based, open-source framework
+- 전체 흐름
+
+  <figure>
+    <img src="/gatsby.png" alt="gatsby flow" />
+    <figcaption>
+      [https://dev.to/sakethkowtha/how-gatsby-works-580f](https://dev.to/sakethkowtha/how-gatsby-works-580f)
+    </figcaption>
+  </figure>
+
+- 특징
+  - GraphQL을 사용하여 내부 데이터를 조회 가능
+    - 조회만 가능 (mutation 없음)
+    - 서버를 만들 필요 없음
+  - [플러그인](https://www.gatsbyjs.com/plugins/#cms) 및 커뮤니티 생태계가 풍부함
+  - **JAM Stack 을 활용한 정적 사이트 생성기**
+    - 빌드할 때 CMS(Wordpress, Contentful 등), DB, API 등에서 데이터를 가져와서 HTML 페이지를 생성
+  - 엄청 짧은 로딩 시간과 함께 JS, CSS, 이미지 등 최적화되어 제공됨
+
+# 설치
+
+- gatsby-cli 설치
+
+  ```jsx
+  node -v // 18 or newer
+  npm i -g gatsby-cli
+  gatsby new
+  ```
+
+- mode
+
+  - develop
+
+    ```jsx
+    npm run develop
+    ```
+
+    - 실제 출시될 수 있게 최적화되지는 않은 상태 (개발자 모드)
+    - create react app 처럼 작동됨 ⇒ 페이지 소스 보기 (option (⌥) + command (⌘) + U)
+    - JS 를 로드해야 함
+    - port 8000
+
+  - production
+
+    ```jsx
+    npm run build
+    npm run serve
+    ```
+
+    - port 9000
+    - index.html
+
+# 프레임워크 기능
+
+- 라우터를 쓰지 않아도 /pages 폴더 하위에 접근 가능
+
+  ```jsx
+  import { Link } from "gatsby";
+  ...
+  <Link to="/">Home</Link>
+  ...
+  ```
+
+- export `Head` 컴포넌트
+- 웹 사이트 `<head>` 에 콘텐츠 입력 가능
+
+  ```jsx
+  import * as React from "react";
+  import type { PageProps } from "gatsby";
+
+  const IndexPage: React.FC<PageProps> = () => <div>index</div>;
+  export default IndexPage;
+
+  export const Head = () => <title>welcome!</title>; // 브라우저 탭에 출력됨
+  ```
+
+- GraphQL
+
+  - [GraphQL Explorer](http://localhost:8000/___graphql)
+
+    - 개발 중인 웹 사이트에 대한 모든 데이터를 보여줌
+
+      ```graphql
+      query MyQuery {
+        site {
+          siteMetadata {
+            title
+            siteUrl
+            description
+          }
+        }
+      }
+      ```
+
+      ```tsx
+      // gatsby-config.ts
+      ...
+      siteMetadata: {
+      	title: `Gatsby TIL Presentation`,
+      	siteUrl: `https://www.yourdomain.tld`
+      },
+      graphqlTypegen: true,
+      ...
+      ```
+
+      - graphqlTypegen : Gatsby가 쿼리를 읽고 자동적으로 맞는 타입을 생성 여부 설정 가능
+
+- useStaticQuery
+  - 정적 쿼리 조회
+  - 컴포넌트에 데이터를 넣을 때 사용 (/pages/\*_/_ 외 파일에서 사용)
+  - 빌드 시 쿼리가 실행되기 때문에, 사용자가 웹 사이트 진입시 로딩 화면 보지 않음 ⇒ public 하위 html 확인하기
+- pageQuery
+  - 페이지에 데이터를 넣을 때 사용
